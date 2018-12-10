@@ -3,14 +3,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5c8f2316fbdd6222deef5854ce1012fecdb1da048971063d9aca0b8e50e03aae"
-  name = "github.com/akito0107/generr"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "0c135008d1c344667f0c4bfc7a05f41f9a27f521"
-
-[[projects]]
-  branch = "master"
   digest = "1:aff61b46ef326e4a211e69245a0ca03dee77f850b6221d3fd0f5bc9208591734"
   name = "github.com/google/logger"
   packages = ["."]
@@ -19,11 +11,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:89cd2208bdeb192cc83ee287216af3c987fc87a90b9087718ad6631b636cefcf"
-  name = "github.com/iancoleman/strcase"
+  digest = "1:be40f095cd741773905744f16c1f7a21fd9226ccd0529f019deb7da6d667f71c"
+  name = "github.com/logrusorgru/aurora"
   packages = ["."]
   pruneopts = "UT"
-  revision = "3605ed457bf7f8caa1371b4fafadadc026673479"
+  revision = "a7b3b318ed4e1ae5b80602b08627267303c68572"
 
 [[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
@@ -53,25 +45,12 @@
   pruneopts = "UT"
   revision = "2a47403f2ae58167c4d75973960ccc62b28cb0d8"
 
-[[projects]]
-  branch = "master"
-  digest = "1:d3955eca8c7b31e6a90e8b92d12caebbba42b92c43c3a0eabac7de911b2745d0"
-  name = "golang.org/x/tools"
-  packages = [
-    "go/ast/astutil",
-    "imports",
-    "internal/fastwalk",
-    "internal/gopathwalk",
-  ]
-  pruneopts = "UT"
-  revision = "4c874b978acba4ecd4a257d3bb8829dd5de17be8"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/akito0107/generr",
     "github.com/google/logger",
+    "github.com/logrusorgru/aurora",
     "github.com/pkg/errors",
     "github.com/urfave/cli",
   ]

@@ -9,7 +9,12 @@ import (
 
 	"fmt"
 
+	"io"
+
+	"bufio"
+
 	"github.com/akito0107/errwrp"
+	. "github.com/logrusorgru/aurora"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )
@@ -85,17 +90,42 @@ func run(ctx *cli.Context) error {
 			results = append(results, r...)
 		}
 	}
-	out(results)
+	if err := out(results); err != nil {
+		return err
+	}
 
 	if len(results) > 0 {
-		return errors.New("may contains unwrapped errors")
+		return errors.New("may contain unwrapped errors")
 	}
 
 	return nil
 }
 
-func out(results []*errwrp.Result) {
+func out(results []*errwrp.Result) error {
+	w := os.Stdout
 	for _, r := range results {
-		fmt.Fprintf(os.Stdout, "file: %s line no. %d\n", r.Fname, r.Pos.Line)
+		fmt.Fprintf(w, Sprintf(Red("file: %s line no: %d\n"), Red(r.Fname), Red(r.Pos.Line)))
+		f, err := os.Open(r.Fname)
+		if err != nil {
+			return errors.Wrap(err, "out")
+		}
+		printSpecificLine(w, f, r.Pos.Line)
+		fmt.Fprintf(w, "\n")
+		fmt.Fprintf(w, "\n")
+	}
+	return nil
+}
+
+func printSpecificLine(w io.Writer, r io.Reader, lnum int) {
+	var line int
+	sc := bufio.NewScanner(r)
+	for sc.Scan() {
+		line++
+		if line == lnum-1 || line == lnum+1 || line == lnum-2 || line == lnum+2 {
+			fmt.Fprint(w, Sprintf(Gray("%d| %s\n"), Gray(line), Gray(sc.Text())))
+		}
+		if line == lnum {
+			fmt.Fprint(w, Sprintf(Red("%d| %s\n"), Red(line).Bold(), Red(sc.Text()).Bold()))
+		}
 	}
 }

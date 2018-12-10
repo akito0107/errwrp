@@ -39,6 +39,9 @@ func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
 	ast.Inspect(f, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.FuncDecl:
+			if x.Type.Results == nil {
+				return true
+			}
 			resList := x.Type.Results.List
 			for i := 0; i < len(resList); i++ {
 				if !containsErrorType(resList[i].Type) {
