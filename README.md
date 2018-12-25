@@ -9,17 +9,17 @@ This tool reports return `error` statements without `errors.Wrap(f)`.
 
 ### Installing
 ```
-$ go get -u github.com/akito0107/errwrp/cmd/mustwrap
+$ go get -u github.com/akito0107/errwrp/cmd/mustwrap-standalone
 ```
 
 ## Options
 ```sh
-$ mustwrap -h
+$ mustwrap-standalone -h
 NAME:
-   mustwrap - check if return err with no errors.Wrap(f)
+   mustwrap-standalone - check if return err with no errors.Wrap(f)
 
 USAGE:
-   mustwrap [OPTIONS]
+   mustwrap-standalone [OPTIONS]
 
 VERSION:
    0.0.0
