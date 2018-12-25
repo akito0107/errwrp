@@ -35,7 +35,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0709bc182dee5d5aaa2e7c3faaed3458187f4ace5cb1e24b2b76d43a712e22c3"
+  digest = "1:264f9d1dfb92eead983eeab2cc9cb089f309a8cadb8fb9793dcd0750c800ca00"
   name = "golang.org/x/sys"
   packages = [
     "windows",
@@ -45,6 +45,58 @@
   pruneopts = "UT"
   revision = "2a47403f2ae58167c4d75973960ccc62b28cb0d8"
 
+[[projects]]
+  branch = "master"
+  digest = "1:fe9d4faced3d3e3dbd445052bc8be3f24f65edf39145becc9e66463bb79db5ba"
+  name = "golang.org/x/tools"
+  packages = [
+    "go/analysis",
+    "go/analysis/internal/analysisflags",
+    "go/analysis/internal/checker",
+    "go/analysis/internal/facts",
+    "go/analysis/passes/asmdecl",
+    "go/analysis/passes/assign",
+    "go/analysis/passes/atomic",
+    "go/analysis/passes/bools",
+    "go/analysis/passes/buildtag",
+    "go/analysis/passes/cgocall",
+    "go/analysis/passes/composite",
+    "go/analysis/passes/copylock",
+    "go/analysis/passes/ctrlflow",
+    "go/analysis/passes/httpresponse",
+    "go/analysis/passes/inspect",
+    "go/analysis/passes/internal/analysisutil",
+    "go/analysis/passes/loopclosure",
+    "go/analysis/passes/lostcancel",
+    "go/analysis/passes/nilfunc",
+    "go/analysis/passes/printf",
+    "go/analysis/passes/shift",
+    "go/analysis/passes/stdmethods",
+    "go/analysis/passes/structtag",
+    "go/analysis/passes/tests",
+    "go/analysis/passes/unmarshal",
+    "go/analysis/passes/unreachable",
+    "go/analysis/passes/unsafeptr",
+    "go/analysis/passes/unusedresult",
+    "go/analysis/singlechecker",
+    "go/analysis/unitchecker",
+    "go/ast/astutil",
+    "go/ast/inspector",
+    "go/cfg",
+    "go/gcexportdata",
+    "go/internal/cgo",
+    "go/internal/gcimporter",
+    "go/internal/packagesdriver",
+    "go/packages",
+    "go/types/objectpath",
+    "go/types/typeutil",
+    "internal/fastwalk",
+    "internal/gopathwalk",
+    "internal/semver",
+  ]
+  pruneopts = "UT"
+  revision = "d00ac6d27372a4273825635281f2dc360d4be563"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -53,6 +105,8 @@
     "github.com/logrusorgru/aurora",
     "github.com/pkg/errors",
     "github.com/urfave/cli",
+    "golang.org/x/tools/go/analysis",
+    "golang.org/x/tools/go/analysis/singlechecker",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

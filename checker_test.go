@@ -65,7 +65,7 @@ func T() error {
 		if len(results) != 1 {
 			t.Errorf("must be 1 but %+v", len(results))
 		}
-		if results[0].Pos.Line != 4 {
+		if results[0].Position.Line != 4 {
 			t.Errorf("must be line 4 error but %+v", results)
 		}
 	})
@@ -91,7 +91,7 @@ func T() error {
 		if len(results) != 1 {
 			t.Errorf("must be 1 but %+v", len(results))
 		}
-		if results[0].Pos.Line != 7 {
+		if results[0].Position.Line != 7 {
 			t.Errorf("must be line 4 error but %+v", results)
 		}
 	})
@@ -114,7 +114,7 @@ func T() (string, error) {
 		if len(results) != 1 {
 			t.Errorf("must be 1 but %+v", len(results))
 		}
-		if results[0].Pos.Line != 4 {
+		if results[0].Position.Line != 4 {
 			t.Errorf("must be line 4 error but %+v", results)
 		}
 	})

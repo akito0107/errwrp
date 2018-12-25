@@ -34,7 +34,12 @@ func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "parser: parser/ParseFile")
 	}
+	decls := parse(fname, f)
 
+	return decls, fset, nil
+}
+
+func parse(fname string, f *ast.File) []*ParsedAST {
 	var decls []*ParsedAST
 	ast.Inspect(f, func(n ast.Node) bool {
 		switch x := n.(type) {
@@ -65,8 +70,7 @@ func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
 
 		return true
 	})
-
-	return decls, fset, nil
+	return decls
 }
 
 func containsErrorType(e ast.Expr) bool {

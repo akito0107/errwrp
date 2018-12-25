@@ -7,11 +7,17 @@ import (
 )
 
 type Result struct {
-	Pos   token.Position
-	Fname string
+	Position token.Position
+	Pos      token.Pos
+	Fname    string
 }
 
 func Check(aset *ParsedAST, fset *token.FileSet) ([]*Result, error) {
+	res := check(aset, fset)
+	return res, nil
+}
+
+func check(aset *ParsedAST, fset *token.FileSet) []*Result {
 	var res []*Result
 
 	ast.Inspect(aset.AST, func(n ast.Node) bool {
@@ -20,8 +26,9 @@ func Check(aset *ParsedAST, fset *token.FileSet) ([]*Result, error) {
 			// may be return directly via function call
 			if len(x.Results) < len(aset.AST.Type.Results.List) {
 				res = append(res, &Result{
-					Fname: aset.FileName,
-					Pos:   fset.Position(x.Pos()),
+					Fname:    aset.FileName,
+					Position: fset.Position(x.Pos()),
+					Pos:      x.Pos(),
 				})
 				return true
 			}
@@ -39,8 +46,9 @@ func Check(aset *ParsedAST, fset *token.FileSet) ([]*Result, error) {
 				return true
 			}
 			res = append(res, &Result{
-				Fname: aset.FileName,
-				Pos:   fset.Position(x.Pos()),
+				Fname:    aset.FileName,
+				Position: fset.Position(x.Pos()),
+				Pos:      x.Pos(),
 			})
 
 		default:
@@ -49,7 +57,7 @@ func Check(aset *ParsedAST, fset *token.FileSet) ([]*Result, error) {
 		return true
 	})
 
-	return res, nil
+	return res
 }
 
 // case of return nil, no problem
