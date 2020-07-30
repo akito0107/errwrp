@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/google/logger v0.0.0-20181112113803-324a7c096a0d
-	github.com/kylelemons/godebug v1.1.0
 	github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli v1.20.0
