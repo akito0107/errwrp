@@ -25,6 +25,9 @@ func T() error {
 
 	t.Run("errors.New return", func(t *testing.T) {
 		src := `package main
+
+import "github.com/pkg/errors"
+
 func T() error {
   return errors.New("test")
 }
@@ -42,6 +45,9 @@ func T() error {
 
 	t.Run("complex case", func(t *testing.T) {
 		src := `package main
+
+import "github.com/pkg/errors" 
+
 func T() error {
   if err := Foo(); err != nil {
     return err
@@ -65,8 +71,8 @@ func T() error {
 		if len(results) != 1 {
 			t.Errorf("must be 1 but %+v", len(results))
 		}
-		if results[0].Position.Line != 4 {
-			t.Errorf("must be line 4 error but %+v", results)
+		if results[0].Position.Line != 7 {
+			t.Errorf("must be line 7 error but %+v", results[0].Position.Line)
 		}
 	})
 

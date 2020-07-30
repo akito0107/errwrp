@@ -15,3 +15,8 @@ func TestAnalyzer_xerrors(t *testing.T) {
 	testdata := analysistest.TestData()
 	analysistest.Run(t, testdata, Analyzer, "xerrors")
 }
+
+func TestAnalyzer_fmt(t *testing.T) {
+	testdata := analysistest.TestData()
+	analysistest.Run(t, testdata, Analyzer, "fmterr")
+}
