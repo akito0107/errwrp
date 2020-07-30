@@ -17,10 +17,16 @@ func init() {
 	logger.Init("errwrp", true, true, os.Stdout)
 }
 
+type ImportPath struct {
+	Name string
+	Pkg  ErrorPkg
+}
+
 type ParsedAST struct {
-	ErrOrd   int
-	AST      *ast.FuncDecl
-	FileName string
+	ErrOrd                int
+	AST                   *ast.FuncDecl
+	FileName              string
+	UsedErrorLikePackaged []ImportPath
 }
 
 func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
@@ -41,8 +47,22 @@ func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
 
 func parse(fname string, f *ast.File) []*ParsedAST {
 	var decls []*ParsedAST
+	var usedPackages []ImportPath
+
 	ast.Inspect(f, func(n ast.Node) bool {
 		switch x := n.(type) {
+		case *ast.ImportSpec:
+			ep := FromPkgName(x.Path.Value)
+			if ep == Unknown {
+				return true
+			}
+			p := ImportPath{
+				Pkg: ep,
+			}
+			if x.Name != nil {
+				p.Name = x.Name.String()
+			}
+			usedPackages = append(usedPackages, p)
 		case *ast.FuncDecl:
 			if x.Type.Results == nil {
 				return true
@@ -57,9 +77,10 @@ func parse(fname string, f *ast.File) []*ParsedAST {
 					continue
 				}
 				p := &ParsedAST{
-					ErrOrd:   i,
-					AST:      x,
-					FileName: fname,
+					ErrOrd:                i,
+					AST:                   x,
+					FileName:              fname,
+					UsedErrorLikePackaged: usedPackages,
 				}
 				decls = append(decls, p)
 			}

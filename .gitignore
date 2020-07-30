@@ -25,3 +25,4 @@ bin
 
 testdata/pkg
 testdata/src/github.com
+testdata/src/golang.org
