@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/token"
+	"strings"
 )
 
 type Result struct {
@@ -12,12 +13,14 @@ type Result struct {
 	Fname    string
 }
 
-func Check(aset *ParsedAST, fset *token.FileSet) ([]*Result, error) {
-	res := check(aset, fset)
+func Check(aset *ParsedAST, fset *token.FileSet, commMap ast.CommentMap) ([]*Result, error) {
+	res := check(aset, fset, commMap)
 	return res, nil
 }
 
-func check(aset *ParsedAST, fset *token.FileSet) []*Result {
+const IgnoreLine = "mustwrap: ignore"
+
+func check(aset *ParsedAST, fset *token.FileSet, commentMap ast.CommentMap) []*Result {
 	var res []*Result
 
 	ast.Inspect(aset.AST, func(n ast.Node) bool {
@@ -52,6 +55,18 @@ func check(aset *ParsedAST, fset *token.FileSet) []*Result {
 			if isUsingFmtError(expr) {
 				return true
 			}
+
+
+			// check ignore
+			cg, ok := commentMap[x]
+			if ok {
+				for _, c := range cg {
+					if strings.Trim(c.Text(), "\n") == strings.Trim(IgnoreLine, "\n") {
+						return true
+					}
+				}
+			}
+
 			res = append(res, &Result{
 				Fname:    aset.FileName,
 				Position: fset.Position(x.Pos()),

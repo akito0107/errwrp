@@ -14,7 +14,7 @@ func T() error {
 	return nil
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -40,7 +40,7 @@ func T2() string {
 	return "sss"
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -60,7 +60,7 @@ type I interface {
 	Func() error
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -80,7 +80,7 @@ func (i *s) Func() error {
 	return nil
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -103,7 +103,7 @@ func (i *s) Func() (err error) {
 	return nil
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -123,7 +123,7 @@ func (i *s) Func() (string, error) {
 	return "", nil
 }
 `
-		decls, _, err := Parse(bytes.NewBufferString(src), "")
+		decls, _, _, err := Parse(bytes.NewBufferString(src), "")
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}

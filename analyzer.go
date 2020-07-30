@@ -1,6 +1,8 @@
 package errwrp
 
 import (
+	"go/ast"
+
 	"golang.org/x/tools/go/analysis"
 )
 
@@ -11,15 +13,28 @@ var Analyzer = &analysis.Analyzer{
 	Run:              run,
 }
 
+type decl struct {
+	Comment ast.CommentMap
+	Decls   []*ParsedAST
+}
+
 func run(pass *analysis.Pass) (interface{}, error) {
-	var decls []*ParsedAST
+	var decls []decl
+
 	for _, f := range pass.Files {
-		decls = append(decls, parse("", f)...)
+		commMap := ast.NewCommentMap(pass.Fset, f, f.Comments)
+		decls = append(decls,
+			decl{
+				Comment: commMap,
+				Decls:   parse("", f),
+			})
 	}
 
 	var res []*Result
 	for _, d := range decls {
-		res = append(res, check(d, pass.Fset)...)
+		for _, a := range d.Decls {
+			res = append(res, check(a, pass.Fset, d.Comment)...)
+		}
 	}
 
 	for _, r := range res {

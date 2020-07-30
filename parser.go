@@ -29,20 +29,21 @@ type ParsedAST struct {
 	UsedErrorLikePackaged []ImportPath
 }
 
-func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, error) {
+func Parse(r io.Reader, fname string) ([]*ParsedAST, *token.FileSet, ast.CommentMap, error) {
 	src, err := ioutil.ReadAll(r)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "parser: ioutil/ReadAll")
+		return nil, nil, nil, errors.Wrap(err, "parser: ioutil/ReadAll")
 	}
 
 	fset := token.NewFileSet()
 	f, err := parser.ParseFile(fset, "", string(src), parser.ParseComments)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "parser: parser/ParseFile")
+		return nil, nil, nil, errors.Wrap(err, "parser: parser/ParseFile")
 	}
+
 	decls := parse(fname, f)
 
-	return decls, fset, nil
+	return decls, fset, ast.NewCommentMap(fset, f, f.Comments), nil
 }
 
 func parse(fname string, f *ast.File) []*ParsedAST {

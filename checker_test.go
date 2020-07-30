@@ -12,9 +12,9 @@ func T() error {
   return nil
 }
 `
-		p, fset, _ := Parse(bytes.NewBufferString(src), "")
+		p, fset, c, _ := Parse(bytes.NewBufferString(src), "")
 
-		results, err := Check(p[0], fset)
+		results, err := Check(p[0], fset, c)
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -32,9 +32,9 @@ func T() error {
   return errors.New("test")
 }
 `
-		p, fset, _ := Parse(bytes.NewBufferString(src), "")
+		p, fset, c, _ := Parse(bytes.NewBufferString(src), "")
 
-		results, err := Check(p[0], fset)
+		results, err := Check(p[0], fset, c)
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -62,9 +62,9 @@ func T() error {
   return nil
 }
 `
-		p, fset, _ := Parse(bytes.NewBufferString(src), "")
+		p, fset, c, _ := Parse(bytes.NewBufferString(src), "")
 
-		results, err := Check(p[0], fset)
+		results, err := Check(p[0], fset, c)
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -88,9 +88,9 @@ func T() error {
   return nil
 }
 `
-		p, fset, _ := Parse(bytes.NewBufferString(src), "")
+		p, fset, c, _ := Parse(bytes.NewBufferString(src), "")
 
-		results, err := Check(p[0], fset)
+		results, err := Check(p[0], fset, c)
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
@@ -111,9 +111,9 @@ func T() (string, error) {
   return "", nil
 }
 `
-		p, fset, _ := Parse(bytes.NewBufferString(src), "")
+		p, fset, c, _ := Parse(bytes.NewBufferString(src), "")
 
-		results, err := Check(p[0], fset)
+		results, err := Check(p[0], fset, c)
 		if err != nil {
 			t.Fatalf("%+v", err)
 		}
