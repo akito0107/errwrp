@@ -23,7 +23,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	}
 
 	for _, r := range res {
-		pass.Reportf(r.Pos, "should be use errors.Wrap() or errors.Wrapf()")
+		pass.Reportf(r.Pos, "should use errors.Wrap() or errors.Wrapf()")
 	}
 
 	return nil, nil
