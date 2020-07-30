@@ -78,12 +78,12 @@ func run(ctx *cli.Context) error {
 		if err != nil {
 			return errors.Wrap(err, "run os/Open")
 		}
-		decls, fset, err := errwrp.Parse(src, f)
+		decls, fset, cm, err := errwrp.Parse(src, f)
 		if err != nil {
 			return errors.Wrap(err, "run errwrp/Parse")
 		}
 		for _, d := range decls {
-			r, err := errwrp.Check(d, fset)
+			r, err := errwrp.Check(d, fset, cm)
 			if err != nil {
 				return errors.Wrap(err, "run errwrp/Check")
 			}
