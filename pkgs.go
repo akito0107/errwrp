@@ -1,5 +1,7 @@
 package errwrp
 
+import "strings"
+
 type ErrorPkg int
 
 const (
@@ -24,13 +26,14 @@ func (e ErrorPkg) PkgName() string {
 }
 
 func FromPkgName(name string) ErrorPkg {
-	if name == PkgErrors.PkgName() {
+	n := strings.Trim(name, "\"")
+	if n == PkgErrors.PkgName() {
 		return PkgErrors
 	}
-	if name == XErrors.PkgName() {
+	if n == XErrors.PkgName() {
 		return XErrors
 	}
-	if name == Fmt.PkgName() {
+	if n == Fmt.PkgName() {
 		return Fmt
 	}
 	return Unknown

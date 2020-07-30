@@ -36,8 +36,15 @@ func check(aset *ParsedAST, fset *token.FileSet) []*Result {
 			if isNilError(expr) {
 				return true
 			}
-			if isUsingPkgErrors(expr) {
-				return true
+			if ok, pkg := containsErrPkg(PkgErrors, aset.UsedErrorLikePackaged); ok {
+				if isUsingPkgErrors(expr, pkg) {
+					return true
+				}
+			}
+			if ok, pkg := containsErrPkg(XErrors, aset.UsedErrorLikePackaged); ok {
+				if isUsingXerrors(expr, pkg) {
+					return true
+				}
 			}
 			if mayUseOriginalError(expr) {
 				return true
@@ -66,7 +73,7 @@ func isNilError(expr ast.Expr) bool {
 }
 
 // case of return errors.X may be safe
-func isUsingPkgErrors(expr ast.Expr) bool {
+func isUsingPkgErrors(expr ast.Expr, ip ImportPath) bool {
 	var pkgErrorMethods = []string{
 		"Errorf", "New", "WithMessage", "WithMessagef",
 		"WithStack", "Wrap", "Wrapf",
@@ -79,7 +86,10 @@ func isUsingPkgErrors(expr ast.Expr) bool {
 	if !ok {
 		return false
 	}
-	if fmt.Sprintf("%s", slctexpr.X) != "errors" {
+	slctX := fmt.Sprintf("%s", slctexpr.X)
+	if ip.Name != "" && ip.Name != slctX {
+		return false
+	} else if ip.Name == "" && slctX != "errors" {
 		return false
 	}
 	mname := fmt.Sprintf("%s", slctexpr.Sel.Name)
@@ -90,6 +100,44 @@ func isUsingPkgErrors(expr ast.Expr) bool {
 	}
 
 	return false
+}
+
+func isUsingXerrors(expr ast.Expr, ip ImportPath) bool {
+	var xerrorsMethods = []string{
+		"Errorf", "New",
+	}
+	callexpr, ok := expr.(*ast.CallExpr)
+	if !ok {
+		return false
+	}
+	slctexpr, ok := callexpr.Fun.(*ast.SelectorExpr)
+	if !ok {
+		return false
+	}
+	slctX := fmt.Sprintf("%s", slctexpr.X)
+	if ip.Name != "" && ip.Name != slctX {
+		return false
+	} else if ip.Name == "" && slctX != "xerrors" {
+		return false
+	}
+	mname := fmt.Sprintf("%s", slctexpr.Sel.Name)
+	for _, m := range xerrorsMethods {
+		if mname == m {
+			return true
+		}
+	}
+
+	return false
+}
+
+func containsErrPkg(pkg ErrorPkg, arr []ImportPath) (bool, ImportPath) {
+	for _, a := range arr {
+		if pkg == a.Pkg {
+			return true, a
+		}
+	}
+
+	return false, ImportPath{}
 }
 
 // case of custom errors such as &myerror{}, no problem
