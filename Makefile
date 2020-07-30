@@ -11,13 +11,16 @@ all: vendor build
 vendor:
 	go mod vendor
 
+testdata/src/github.com:
+	GOPATH=$(CURDIR)/testdata GO111MODULE=off go get github.com/pkg/errors
+
 build:
 	go build -mod=vendor -ldflags "$(LDFLAGS)" -o bin/errwrp cmd/mustwrap/main.go
 
-test:
+test: testdata/src/github.com
 	go test -v ./...
 
-test/cover:
+test/cover: testdata/src/github.com
 	go test -v -coverprofile=out ./...
 
 ## remove build files
